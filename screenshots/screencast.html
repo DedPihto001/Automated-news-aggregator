@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Скринкаст — агрегатор новостей рыбной отрасли</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07131d;
+      --panel: #0e202d;
+      --panel-light: #142a38;
+      --text: #edf5f7;
+      --muted: #a4bac4;
+      --accent: #62ddc6;
+      --blue: #82bfff;
+      --line: #24404e;
+      --green: #83e6a3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      width: 1600px;
+      height: 1000px;
+      margin: 0;
+      overflow: hidden;
+      padding: 54px 70px;
+      background:
+        radial-gradient(ellipse at 87% 4%, #123747 0, transparent 34%),
+        radial-gradient(ellipse at 6% 91%, #102d35 0, transparent 34%),
+        var(--bg);
+      color: var(--text);
+      font: 20px/1.5 "Segoe UI", Arial, sans-serif;
+    }
+
+    .slide { display: none; height: 100%; }
+    .slide.active { display: flex; flex-direction: column; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .brand { color: var(--accent); font-weight: 700; }
+
+    h1 {
+      max-width: 1200px;
+      margin: 0;
+      font-size: 48px;
+      line-height: 1.15;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      margin: 15px 0 34px;
+      color: var(--muted);
+      font-size: 21px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 24px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 26px 30px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(145deg, #10232f, #0b1a25);
+      box-shadow: 0 18px 48px #0003;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 19px;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .tree, .terminal, .env, .output {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font: 17px/1.62 Consolas, "Cascadia Code", monospace;
+    }
+
+    .tree { color: #d7e8ee; }
+    .folder { color: var(--blue); }
+    .file { color: #ecf4f6; }
+    .terminal {
+      padding: 22px;
+      border-radius: 12px;
+      background: #050c12;
+      color: #d8e6e9;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .prompt { color: var(--green); }
+    .comment { color: #8ca2ac; }
+    .value { color: #f5d58b; }
+    .secret { color: #d39bff; }
+
+    .source-row {
+      display: flex;
+      gap: 14px;
+      margin: 15px 0;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-light);
+    }
+
+    .source-number {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      place-items: center;
+      border-radius: 10px;
+      background: #183c48;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .source-row strong { display: block; font-size: 18px; }
+    .source-row code { color: var(--blue); font-size: 14px; }
+    .small { color: var(--muted); font-size: 16px; }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 17px 0;
+    }
+
+    .metric {
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-light);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--accent);
+      font: 700 30px/1.2 Consolas, monospace;
+    }
+
+    .metric span { color: var(--muted); font-size: 14px; }
+
+    .output {
+      padding: 22px;
+      border-radius: 12px;
+      background: #050c12;
+      color: #d8e6e9;
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .success { color: var(--green); }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <section class="slide" data-slide="1">
+    <header>
+      <span class="brand">NEWS AGGREGATOR / PROJECT TOUR</span>
+      <span>01 — СТРУКТУРА</span>
+    </header>
+    <h1>Новости рыбной отрасли<br>из двух источников — в одном дайджесте</h1>
+    <p class="subtitle">Python · RSS · SQLite · APScheduler · Telegram Bot API</p>
+    <div class="grid">
+      <article class="card">
+        <h2>Структура проекта</h2>
+        <pre class="tree"><span class="folder">Automated-news-aggregator/</span>
+├── <span class="folder">bot/</span>
+│   └── <span class="file">telegram_bot.py</span>
+├── <span class="folder">collectors/</span>
+│   ├── <span class="file">base.py</span>
+│   ├── <span class="file">rss_collector.py</span>
+│   └── <span class="file">api_collector.py</span>
+├── <span class="folder">database/</span>
+│   ├── <span class="file">db.py</span>
+│   └── <span class="file">models.py</span>
+├── <span class="folder">scheduler/</span>
+│   └── <span class="file">jobs.py</span>
+├── <span class="folder">tests/</span>
+├── <span class="folder">data/</span>
+│   └── <span class="file">news.db</span> <span class="comment"># локальная SQLite</span>
+├── <span class="file">main.py</span>
+├── <span class="file">config.py</span>
+├── <span class="file">requirements.txt</span>
+└── <span class="file">.env.example</span></pre>
+      </article>
+      <article class="card">
+        <h2>Что делает приложение</h2>
+        <div class="source-row">
+          <span class="source-number">1</span>
+          <div><strong>Fishnews</strong><code>fishnews.ru/rss.xml</code></div>
+        </div>
+        <div class="source-row">
+          <span class="source-number">2</span>
+          <div><strong>Fishretail</strong><code>fishretail.ru/news/rss</code></div>
+        </div>
+        <p>Ленты нормализуются, очищаются от HTML и сохраняются в SQLite. Уникальный индекс по URL не допускает повторных записей.</p>
+        <p>APScheduler запускает сбор по интервалу и Telegram-дайджест по расписанию. Команда <code>/digest</code> отправляет новые материалы по запросу.</p>
+        <p class="small">Токены и chat ID вводятся локально и не включаются в репозиторий.</p>
+      </article>
+    </div>
+    <footer><span>Автоматический мониторинг открытых RSS-лент</span><span>Fishnews + Fishretail</span></footer>
+  </section>
+
+  <section class="slide" data-slide="2">
+    <header>
+      <span class="brand">NEWS AGGREGATOR / PROJECT TOUR</span>
+      <span>02 — ВВОД И ЗАПУСК</span>
+    </header>
+    <h1>Настройка Telegram и запуск сборщика</h1>
+    <p class="subtitle">Все параметры — через локальный .env. Секреты в кадре скрыты.</p>
+    <div class="grid">
+      <article class="card">
+        <h2>Команды в PowerShell</h2>
+        <pre class="terminal"><span class="prompt">PS&gt;</span> cd "$HOME\Desktop\Course\агрегатор новостей"
+
+<span class="prompt">PS&gt;</span> .\.venv\Scripts\Activate.ps1
+
+<span class="prompt">(.venv) PS&gt;</span> python -m pip install -r requirements.txt
+
+<span class="prompt">(.venv) PS&gt;</span> Copy-Item .env.example .env
+
+<span class="prompt">(.venv) PS&gt;</span> notepad .env
+
+<span class="prompt">(.venv) PS&gt;</span> python main.py</pre>
+        <p class="small">При старте выполняется первичный сбор. Затем сервис работает автоматически, пока запущен процесс.</p>
+      </article>
+      <article class="card">
+        <h2>Вводимые настройки .env</h2>
+        <pre class="terminal env">TELEGRAM_BOT_TOKEN=<span class="secret">[секретный токен бота]</span>
+TELEGRAM_CHAT_ID=<span class="secret">[ваш Chat ID]</span>
+
+FISHNEWS_RSS_URL=<span class="value">https://fishnews.ru/rss.xml</span>
+FISHRETAIL_RSS_URL=<span class="value">https://fishretail.ru/news/rss</span>
+
+COLLECT_INTERVAL_MINUTES=<span class="value">60</span>
+DIGEST_HOUR=<span class="value">9</span>
+DIGEST_MINUTE=<span class="value">0</span>
+TIMEZONE=<span class="value">Europe/Moscow</span>
+DATABASE_PATH=<span class="value">data/news.db</span></pre>
+        <p class="small">Бот отвечает только в заданном чате. Команда <code>/digest</code> запрашивает новые материалы.</p>
+      </article>
+    </div>
+    <footer><span>Входные данные: RSS-адреса + локальная конфигурация</span><span>Telegram credentials не показаны</span></footer>
+  </section>
+
+  <section class="slide" data-slide="3">
+    <header>
+      <span class="brand">NEWS AGGREGATOR / PROJECT TOUR</span>
+      <span>03 — РЕАЛЬНЫЙ РЕЗУЛЬТАТ</span>
+    </header>
+    <h1>Два live-источника · 42 записи · без дублей</h1>
+    <p class="subtitle">Реальный сбор RSS 6 ноября 2026 года в одноразовую SQLite-базу для демонстрации.</p>
+    <div class="metrics">
+      <div class="metric"><strong>22</strong><span>материала Fishnews</span></div>
+      <div class="metric"><strong>20</strong><span>материалов Fishretail</span></div>
+      <div class="metric"><strong>0</strong><span>повторов URL</span></div>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <h2>Фактический лог сборщика</h2>
+        <pre class="output">13:10:23 INFO Источник Fishnews: получено 22, добавлено <span class="success">22</span>
+13:10:24 INFO Источник Fishretail: получено 20, добавлено <span class="success">20</span>
+13:10:24 INFO Сбор завершён: добавлено <span class="success">42 новых материалов</span>
+13:10:26 INFO Источник Fishnews: получено 22, добавлено <span class="success">0 новых</span>
+13:10:27 INFO Источник Fishretail: получено 20, добавлено <span class="success">0 новых</span>
+
+FIRST RUN   added=42  total=42  duplicate_urls=0
+SECOND RUN  added=0   duplicate_urls=0</pre>
+      </article>
+      <article class="card">
+        <h2>Выходные данные из SQLite</h2>
+        <div class="source-row">
+          <span class="source-number">01</span>
+          <div>
+            <strong>Fishnews</strong>
+            <p>Тверским рыбоводам приготовили компенсации</p>
+            <code>fishnews.ru/news/56681</code>
+          </div>
+        </div>
+        <div class="source-row">
+          <span class="source-number">02</span>
+          <div>
+            <strong>Fishretail</strong>
+            <p>Экспорт ракообразных из Норвегии: рост объемов поставок краба и рекордные цены на холодноводную креветку</p>
+            <code>fishretail.ru/news/eksport-rakoobraznih-iz-norvegii-rost-obemov-513499</code>
+          </div>
+        </div>
+        <p class="small">Повторный опрос тех же лент добавил 0 записей. Дайджест отправляет новые записи и помечает их только после успешной доставки.</p>
+      </article>
+    </div>
+    <footer><span>SQLite · UNIQUE(url) · повторный запуск: 0 новых</span><span>Источники: Fishnews + Fishretail</span></footer>
+  </section>
+
+  <script>
+    const slideNumber = new URLSearchParams(location.search).get("slide") || "1";
+    const slide = document.querySelector(`[data-slide="${slideNumber}"]`);
+    if (slide) slide.classList.add("active");
+  </script>
+</body>
+</html>

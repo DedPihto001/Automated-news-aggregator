@@ -1,0 +1,12 @@
+INPUT: Public RSS feeds https://fishnews.ru/rss.xml + https://fishretail.ru/news/rss
+DATABASE: Temporary SQLite via Database; no manual INSERT statements
+2026-11-06 13:10:23,723 INFO scheduler.jobs: Источник Fishnews: получено 22, добавлено 22 новых материалов
+2026-11-06 13:10:24,917 INFO scheduler.jobs: Источник Fishretail: получено 20, добавлено 20 новых материалов
+2026-11-06 13:10:24,918 INFO scheduler.jobs: Сбор завершён: добавлено 42 новых материалов
+2026-11-06 13:10:26,280 INFO scheduler.jobs: Источник Fishnews: получено 22, добавлено 0 новых материалов
+2026-11-06 13:10:27,592 INFO scheduler.jobs: Источник Fishretail: получено 20, добавлено 0 новых материалов
+2026-11-06 13:10:27,593 INFO scheduler.jobs: Сбор завершён: добавлено 0 новых материалов
+FIRST_RUN: added=42; total=42; duplicate_urls=0
+SECOND_RUN: added=0; duplicate_urls=0
+ITEM: [Fishnews] Тверским рыбоводам приготовили компенсации | https://fishnews.ru/news/56681
+ITEM: [Fishretail] Экспорт ракообразных из Норвегии: рост объемов поставок краба и рекордные цены на холодноводную креветку | https://fishretail.ru/news/eksport-rakoobraznih-iz-norvegii-rost-obemov-513499
